@@ -1,0 +1,33 @@
+     // 采集数据
+        List<Blog> blogList = blogDao.queryListBlog();
+        // 文档集合
+        List<Document> documentList = new ArrayList<>();
+        for (Blog blog : blogList) {
+            // 创建文档对象
+            Document document = new Document();
+            // 创建域对象,并且放入文档对象中
+            document.add(new StringField("id", String.valueOf(blog.getId()), Field.Store.YES));
+            document.add(new TextField("title", blog.getTitle(), Field.Store.YES));
+            document.add(new StringField("releaseDate", DateUtil.formatDate(new Date(), "yyyy-MM-dd"), Field.Store
+                    .YES));
+            document.add(new TextField("content", blog.getContent(), Field.Store.YES));
+            // 文档对象放入文档集合中
+            documentList.add(document);
+        }
+        // 中文分词器
+        SmartChineseAnalyzer analyzer = new SmartChineseAnalyzer();
+        // 创建Directory目录对象，目录对象表示索引库的位置
+        try {
+            dir = FSDirectory.open(Paths.get("C://lucene"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 创建IndexWriterConfig对象，这个对象中指定切分词使用的分词器
+        IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+        // 建IndexWriter输出流对象，指定输出的位置和使用的config初始化对象
+        IndexWriter writer = new IndexWriter(dir, iwc);
+        // 写入文档到索引库
+        for (Document doc : documentList) {
+            writer.addDocument(doc);
+        }
+        writer.close();

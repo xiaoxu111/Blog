@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--第一步:加载jdbc.properties数据库连接信息配置文件-->
+    <context:property-placeholder location="classpath:*.properties"/>
+    <!--第二步:配置dataSource,连接数据库-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!--第三步:配置sqlSessionFactory对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--3.1:注入数据源dataSource,数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--3.2配置mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <!--3.3配置别名,扫描entity包下所有的实体类-->
+        <property name="typeAliasesPackage" value="com.aliwo.entity"/>
+        <!--3.4扫描sql配置文件-->
+        <property name="mapperLocations" value="classpath:com/aliwo/mappers/*.xml"/>
+    </bean>
+
+
+    <!--第四步:配置扫描Dao接口包,动态实现Dao接口，注入到spring容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--4.1:注入sqlSessionFactory对象-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--4.2:给出需要扫描的dao接口的包-->
+        <property name="basePackage" value="com.aliwo.dao"/>
+    </bean>
+
+</beans>

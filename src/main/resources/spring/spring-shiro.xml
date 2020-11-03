@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--第五步:配置密码匹配器-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!--使用的加密算法算法-->
+        <property name="hashAlgorithmName" value="${algorithmName}"/>
+        <!--散列次数-->
+        <property name="hashIterations" value="${hashInterations}"/>
+        <!--设置十六进制的编码为false,因为默认是开启的(true)-->
+        <property name="storedCredentialsHexEncoded" value="false"/>
+    </bean>
+
+    <!--配置自定义realm,时机开发中推荐此种方式-->
+    <bean id="myRealm" class="com.aliwo.realm.MyRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+    <!-- 安全管理器securityManager -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+    </bean>
+
+    <!-- Shiro过滤器,用来配置URL的映射规则-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 身份认证失败，则跳转到登录页面的配置 -->
+        <property name="loginUrl" value="/login.jsp"/>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /login=anon
+                /blogger/backend.do=authc
+            </value>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.alibaba.com/schema/stat"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.alibaba.com/schema/stat http://www.alibaba.com/schema/stat.xsd">
+    <!--spring-dao配置-->
+    <!--第一步:加载jdbc.properties数据库连接信息配置文件-->
+    <context:property-placeholder location="classpath:*.properties"/>
+    <!--第二步:配置dataSource,连接数据库-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!--第三步:配置sqlSessionFactory对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--3.1:注入数据源dataSource,数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--3.2配置mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <!--3.3配置别名,扫描entity包下所有的实体类-->
+        <property name="typeAliasesPackage" value="com.aliwo.entity"/>
+        <!--3.4扫描sql配置文件-->
+        <property name="mapperLocations" value="classpath:com/aliwo/mappers/*.xml"/>
+    </bean>
+    <!--第四步:配置扫描Dao接口包,动态实现Dao接口，注入到spring容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--4.1:注入sqlSessionFactory对象-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--4.2:给出需要扫描的dao接口的包-->
+        <property name="basePackage" value="com.aliwo.dao"/>
+    </bean>
+
+    <!--spring-service配置-->
+    <!--第一步：开启扫描,此注解表示支持注解开发,扫描service包下所有内容支持注解-->
+    <context:component-scan base-package="com.aliwo.service"/>
+    <!--第二步：配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--注入数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--第三步：配置基于注解的事务-->
+    <tx:annotation-driven/>
+
+    <!--spring-shiro配置-->
+    <!--第五步:配置密码匹配器-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!--使用的加密算法算法-->
+        <property name="hashAlgorithmName" value="${algorithmName}"/>
+        <!--散列次数-->
+        <property name="hashIterations" value="${hashInterations}"/>
+        <!--设置十六进制的编码为false,因为默认是开启的(true)-->
+        <property name="storedCredentialsHexEncoded" value="false"/>
+    </bean>
+    <!--配置自定义realm,时机开发中推荐此种方式-->
+    <bean id="myRealm" class="com.aliwo.realm.MyRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+    <!-- 安全管理器securityManager -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+    </bean>
+    <!-- Shiro过滤器,用来配置URL的映射规则-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 身份认证失败，则跳转到登录页面的配置 -->
+        <property name="loginUrl" value="/login.jsp"/>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /login=anon
+                /adminview/**=authc
+            </value>
+        </property>
+    </bean>
+    <!--&lt;!&ndash; 保证实现了Shiro内部lifecycle函数的bean执行 &ndash;&gt;
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    &lt;!&ndash; 开启Shiro注解 &ndash;&gt;
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>-->
+
+</beans>
