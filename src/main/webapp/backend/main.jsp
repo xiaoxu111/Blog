@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>IT小工小徐博客系统管理页面-Powered by java1234</title>
+    <title>IT小工小徐博客系统管理页面-Powered by www.aliwo.cn</title>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/static/jquery-easyui-1.3.3/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css"
@@ -22,6 +22,7 @@
             $("#dlg").dialog("open").dialog("setTitle", "修改密码");
             url = "${pageContext.request.contextPath}/admin/blogger/modifyPassword.do?id=${currentUser.id}";
         }
+
         function logout() {
             $.messager.confirm("系统提示", "您确定要退出系统吗？", function (r) {
                 if (r) {

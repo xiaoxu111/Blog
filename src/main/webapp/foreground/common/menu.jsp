@@ -10,6 +10,7 @@
             return true;
         }
     }
+
     function build() {
         alert("正在建设中,敬请期待!!!")
     }
@@ -41,7 +42,8 @@
                         <!-- <li><a href="#"><font color="black"><strong>Java学习路线图</strong></font></a></li> -->
                         <!-- <li><a href="#"><font color="red"><strong>Java1234 VIP项目</strong></font></a></li> -->
                         <li>
-                            <a id="btn" href="${pageContext.request.contextPath}/echart/blogecharts.jsp" target="_blank">
+                            <a id="btn" href="${pageContext.request.contextPath}/echart/blogecharts.jsp"
+                               target="_blank">
                                 <font color="red">
                                     <strong>可视化分析</strong>
                                 </font>
