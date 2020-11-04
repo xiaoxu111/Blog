@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * 评论Service实现类
  *
- * @author Administrator
+ * @author xuyy19
  */
 @Service("commentService")
 public class CommentServiceImpl implements CommentService {

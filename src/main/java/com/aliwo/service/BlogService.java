@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * 博客Service接口
- * @author Administrator
+ * @author xuyy19
  *
  */
 public interface BlogService {

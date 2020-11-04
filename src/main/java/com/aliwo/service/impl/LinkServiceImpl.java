@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * 友情链接Service实现类
- * @author Administrator
+ * @author xuyy19
  *
  */
 @Service("linkService")

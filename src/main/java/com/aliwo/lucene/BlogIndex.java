@@ -125,11 +125,11 @@ public class BlogIndex {
         booleanQuery.add(query2, BooleanClause.Occur.SHOULD);
         booleanQuery.add(query4, BooleanClause.Occur.SHOULD);
         booleanQuery.add(query5, BooleanClause.Occur.SHOULD);
-        //最多返回100条数据
+        // 最多返回100条数据
         TopDocs hits = is.search(booleanQuery.build(), 100);
         QueryScorer scorer = new QueryScorer(query);
         Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);
-        //高亮
+        // 高亮
         SimpleHTMLFormatter simpleHTMLFormatter = new SimpleHTMLFormatter("<b><font color='red'>", "</font></b>");
         Highlighter highlighter = new Highlighter(simpleHTMLFormatter, scorer);
         highlighter.setTextFragmenter(fragmenter);

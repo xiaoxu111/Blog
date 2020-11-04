@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * 友情链接Service接口
- * @author Administrator
+ * @author xuyy19
  *
  */
 public interface LinkService {

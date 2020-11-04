@@ -6,7 +6,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 /**
  * 加密工具
  *
- * @author Administrator
+ * @author xuyy19
  */
 public class CryptographyUtil {
 

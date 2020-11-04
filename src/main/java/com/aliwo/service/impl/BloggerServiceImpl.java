@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 博主Service实现类
- * @author Administrator
+ * @author xuyy19
  *
  */
 @Service("bloggerService")

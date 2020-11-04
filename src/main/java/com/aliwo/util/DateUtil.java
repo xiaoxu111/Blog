@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * 日期工具类
  *
- * @author Administrator
+ * @author xuyy19
  */
 public class DateUtil {
 
@@ -15,7 +15,7 @@ public class DateUtil {
      *
      * @param date
      * @param format
-     * @return
+     *
      */
     public static String formatDate(Date date, String format) {
         String result = "";

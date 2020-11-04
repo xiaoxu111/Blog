@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * 博客Service实现类
- * @author Administrator
+ * @author xuyy19
  *
  */
 @Service("blogService")

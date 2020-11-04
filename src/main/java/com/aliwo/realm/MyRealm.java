@@ -11,7 +11,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 自定义Realm
- * @author java1234_小锋
+ * @author xuyy19
  *
  */
 public class MyRealm extends AuthorizingRealm {
@@ -35,15 +35,15 @@ public class MyRealm extends AuthorizingRealm {
 		String userName=(String)token.getPrincipal();
 		Blogger blogger=bloggerService.getByUserName(userName);
 		if(blogger == null){
-			/** 当前用户信息存到session中*/
-			/*
-			SecurityUtils.getSubject().getSession().setAttribute("currentUser", blogger);
-			AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(userName,blogger.getPassword(),
-					ByteSource.Util.bytes(blogger.getUserName()),getName());
-			return authcInfo;*/
+			// 当前用户信息存到session中
+
+			// SecurityUtils.getSubject().getSession().setAttribute("currentUser", blogger);
+			// AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(userName,blogger.getPassword(),
+			// ByteSource.Util.bytes(blogger.getUserName()),getName());
+			// return authcInfo;
 			throw new UnknownAccountException("未知的账户");
 		}
-			/** 当前用户信息存到session中*/
+			// 当前用户信息存到session中
 			SecurityUtils.getSubject().getSession().setAttribute("currentUser",blogger );
 			 return new SimpleAuthenticationInfo(userName,blogger.getPassword(),
 					ByteSource.Util.bytes(blogger.getUserName()),getName());

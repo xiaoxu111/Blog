@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * 博客类型Service实现类
  *
- * @author Administrator
+ * @author xuyy19
  */
 @Service("blogTypeService")
 public class BlogTypeServiceImpl implements BlogTypeService {
