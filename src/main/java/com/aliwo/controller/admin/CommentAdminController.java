@@ -46,15 +46,15 @@ public class CommentAdminController {
             required = false) String rows, @RequestParam(value = "state", required = false) String state,
                        HttpServletResponse response) throws Exception {
         PageBean pageBean = new PageBean(Integer.parseInt(page), Integer.parseInt(rows));
-        //加载翻页,状态参数
+        // 加载翻页,状态参数
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("start", pageBean.getStart());
         map.put("size", pageBean.getPageSize());
-        /**评论状态 */
+        // 评论状态
         map.put("state", state);
-        //查询评论列表
+        // 查询评论列表
         List<Comment> commentList = commentService.list(map);
-        //查询评论总数
+        // 查询评论总数
         Long total = commentService.getTotal(map);
 
         JSONObject result = new JSONObject();

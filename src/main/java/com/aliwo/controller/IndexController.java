@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 主页Controller
  *
- * @author Administrator
+ * @author xuyy19
  */
 @Controller
 @RequestMapping("/")
@@ -48,7 +48,7 @@ public class IndexController {
         if (StringUtil.isEmpty(page)) {
             page = "1";
         }
-        //一页显示十条数据
+        // 一页显示十条数据
         PageBean pageBean = new PageBean(Integer.parseInt(page), 10);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("start", pageBean.getStart());
@@ -59,9 +59,9 @@ public class IndexController {
         for (Blog blog : blogList) {
             List<String> imagesList = blog.getImagesList();
             String blogInfo = blog.getContent();
-            //添加lucene
+            // 添加lucene
             Document doc = Jsoup.parse(blogInfo);
-            /**查找扩展名是jpg的图片 */
+            // 查找扩展名是jpg的图片
             Elements jpgs = doc.select("img[src$=.jpg]");
             for (int i = 0; i < jpgs.size(); i++) {
                 Element jpg = jpgs.get(i);
@@ -72,7 +72,7 @@ public class IndexController {
             }
         }
         mav.addObject("blogList", blogList);
-        /**查询参数 */
+        // 查询参数
         StringBuffer param = new StringBuffer();
         if (StringUtil.isNotEmpty(typeId)) {
             param.append("typeId=" + typeId + "&");
@@ -80,11 +80,11 @@ public class IndexController {
         if (StringUtil.isNotEmpty(releaseDateStr)) {
             param.append("releaseDateStr=" + releaseDateStr + "&");
         }
-        //request.getContextPath() 获取项目路径
-       String pageCode = PageUtil.genPagination(request.getContextPath() + "/index.html", blogService
+        // request.getContextPath() 获取项目路径
+        String pageCode = PageUtil.genPagination(request.getContextPath() + "/index.html", blogService
                 .getTotal(map), Integer.parseInt(page), 10, param.toString());
-        //添加分页功能
-        mav.addObject("pageCode",pageCode);
+        // 添加分页功能
+        mav.addObject("pageCode", pageCode);
         mav.addObject("mainPage", "foreground/blog/list.jsp");
         mav.addObject("pageTitle", "IT小徐博客系统");
         mav.setViewName("mainTemp");

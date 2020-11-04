@@ -54,24 +54,24 @@ public class SystemAdminController {
     @RequestMapping("/refreshSystem")
     public String refreshSystem(HttpServletResponse response, HttpServletRequest request) throws Exception {
         ServletContext application = RequestContextUtils.findWebApplicationContext(request).getServletContext();
-        /** 查询博主信息*/
+        // 查询博主信息
         Blogger blogger = bloggerService.find();
         blogger.setPassword(null);
         application.setAttribute("blogger", blogger);
 
-        /**查询博客类别以及博客的数量 */
+        // 查询博客类别以及博客的数量
         List<BlogType> blogTypeCountList = blogTypeService.countList();
         application.setAttribute("blogTypeCountList", blogTypeCountList);
 
 
-        /**  根据日期分组查询博客*/
+        // 根据日期分组查询博客
         List<Blog> blogCountList = blogService.countList();
         application.setAttribute("blogCountList", blogCountList);
-        //根据博客点击次数可视化分析数据
+        // 根据博客点击次数可视化分析数据
         List<Blog> hotBlogList = blogService.getHotBlog();
         application.setAttribute("hotBlogList", hotBlogList);
 
-        /**获取所有友情链接 */
+        // 获取所有友情链接
         List<Link> linkList = linkService.list(null);
         application.setAttribute("linkList", linkList);
 

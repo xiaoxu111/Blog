@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 博主Controller层
  *
- * @author java1234_小锋
+ * @author xuyy19
  */
 @Controller
 @RequestMapping("/blogger")
@@ -31,7 +31,7 @@ public class BloggerController {
     private BloggerService bloggerService;
 
     @RequestMapping("/backend")
-    public String backend(){
+    public String backend() {
         return "forward:/backend/main.jsp";
     }
 
@@ -42,15 +42,15 @@ public class BloggerController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(Blogger blogger, HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(blogger.getUserName(),blogger.getPassword());
+        UsernamePasswordToken token = new UsernamePasswordToken(blogger.getUserName(), blogger.getPassword());
         try {
             subject.login(token); // 登录验证
+            // 请求重定向
             return "redirect:/blogger/backend.do";
-        }
-        catch (UnknownAccountException e) {
+        } catch (UnknownAccountException e) {
             request.setAttribute("blogger", blogger);
             request.setAttribute("errorInfo", "用户名错误");
         } catch (IncorrectCredentialsException e) {

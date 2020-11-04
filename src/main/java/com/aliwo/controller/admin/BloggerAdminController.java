@@ -51,7 +51,7 @@ public class BloggerAdminController {
     @RequestMapping("/save")
     public String save(@RequestParam("imageFile") MultipartFile imageFile, Blogger blogger, HttpServletRequest
             request, HttpServletResponse response) throws Exception {
-        //头像的保存
+        // 头像的保存
         if (!imageFile.isEmpty()) {
             String filePath = request.getServletContext().getRealPath("/");
             String imageName = DateUtil.getCurrentDateStr() + "." + imageFile.getOriginalFilename().split("\\.")[1];
@@ -94,13 +94,13 @@ public class BloggerAdminController {
      * @throws Exception
      */
     @RequestMapping("/modifyPassword")
-    public String modifyPassword(String newPassword, HttpServletResponse response,Blogger blogger) throws Exception {
-        //对铭文密码进行加密
+    public String modifyPassword(String newPassword, HttpServletResponse response, Blogger blogger) throws Exception {
+        // 对铭文密码进行加密
         PasswordVo vo = new PasswordVo();
         vo.setPassword(newPassword);
         vo.setSalt(blogger.getUserName());
         blogger.setPassword(passwordService.encryptPassword(vo));
-        //blogger.setPassword(CryptographyUtil.md5(newPassword, "xu1230"));
+        // blogger.setPassword(CryptographyUtil.md5(newPassword, "xu1230"));
         int resultTotal = bloggerService.update(blogger);
         JSONObject result = new JSONObject();
         if (resultTotal > 0) {

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 /**
  * 评论Controller层
  *
- * @author Administrator
+ * @author xuyy19
  */
 @Controller
 @RequestMapping("/comment")
@@ -42,16 +42,16 @@ public class CommentController {
     @RequestMapping("/save")
     public String save(Comment comment, @RequestParam("imageCode") String imageCode, HttpServletRequest request,
                        HttpServletResponse response, HttpSession session) throws Exception {
-        /** 获取系统生成的验证码*/
+        // 获取系统生成的验证码
         String sRand = (String) session.getAttribute("sRand");
         JSONObject result = new JSONObject();
-        /**操作的记录条数 */
+        // 操作的记录条数
         int resultTotal = 0;
         if (!imageCode.equals(sRand)) {
             result.put("success", false);
             result.put("errorInfo", "验证码填写错误！");
         } else {
-            /** 获取用户IP*/
+            // 获取用户IP
             String userIp = request.getRemoteAddr();
             comment.setUserIp(userIp);
             if (comment.getId() == null) {

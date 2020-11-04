@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * 博客Controller层
  *
- * @author Administrator
+ * @author xuyy19
  */
 @Controller
 @RequestMapping("/blog")
@@ -50,9 +50,9 @@ public class BlogController {
      * 博客索引
      */
     private BlogIndex blogIndex = new BlogIndex();
-
+    // lucene 索引库存储位置
     private Directory dir = null;
-
+    // 初始化加载索引库标志
     private static Boolean FLAG = false;
 
     /**
@@ -70,7 +70,8 @@ public class BlogController {
         String keyWords = blog.getKeyWord();
         if (StringUtil.isNotEmpty(keyWords)) {
             String[] arr = keyWords.split(" ");
-            mav.addObject("keyWords", StringUtil.filterWhite(Arrays.asList(arr)));
+            // 重新 new ArrayList<>() 数组转换为list
+            mav.addObject("keyWords", StringUtil.filterWhite(new ArrayList<String>(Arrays.asList(arr))));
         } else {
             mav.addObject("keyWords", null);
         }
