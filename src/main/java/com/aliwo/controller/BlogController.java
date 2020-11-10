@@ -15,6 +15,8 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/blog")
 public class BlogController {
+    private static final Logger LOG = LoggerFactory.getLogger(BlogController.class);
 
     @Autowired
     private BlogService blogService;
@@ -65,7 +68,13 @@ public class BlogController {
     public ModelAndView details(@PathVariable("id") Integer id, HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView();
         // 根据主键查询博客信息
-        Blog blog = blogService.findById(id);
+        Blog blog = new Blog();
+        try {
+             blog = blogService.findById(id);
+        } catch (Exception e) {
+            LOG.info("blog========id:"+blog );
+            throw new RuntimeException("查询的博客信息不存在,已被删除博客信息!");
+        }
         // 处理关键字
         String keyWords = blog.getKeyWord();
         if (StringUtil.isNotEmpty(keyWords)) {
