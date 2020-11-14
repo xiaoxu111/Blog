@@ -13,7 +13,8 @@ function openTab(text, url, iconCls) {
         });
     }
 }
-//修改密码
+
+// 修改密码
 function modifyPassword() {
     $("#fm").form("submit", {
         url: url,
@@ -43,20 +44,20 @@ function modifyPassword() {
     });
 }
 
-//关闭修改密码框
+// 关闭修改密码框
 function closePasswordModifyDialog() {
     resetValue();
     $("#dlg").dialog("close");
 }
 
-//重置
+// 重置
 function resetValue() {
     $("#oldPassword").val("");
     $("#newPassword").val("");
     $("#newPassword2").val("");
 }
 
-//安全退出登录
+// 安全退出登录
 /*function logout() {
     $.messager.confirm("系统提示", "您确定要退出系统吗？", function (r) {
         if (r) {
@@ -65,8 +66,9 @@ function resetValue() {
     });
 }*/
 
-//刷新系统缓存
+// 刷新系统缓存
 function refreshSystem() {
+    debugger
     $.post("/admin/system/refreshSystem.do", {}, function (result) {
         if (result.success) {
             $.messager.alert("系统提示", "已成功刷新系统缓存！");

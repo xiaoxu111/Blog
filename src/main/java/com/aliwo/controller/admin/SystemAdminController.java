@@ -77,6 +77,7 @@ public class SystemAdminController {
 
         JSONObject result = new JSONObject();
         result.put("success", true);
+        result.put("msg","更新缓存成功" );
         ResponseUtil.write(response, result);
         return null;
     }

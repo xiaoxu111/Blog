@@ -5,7 +5,9 @@ import com.aliwo.lucene.BlogIndex;
 import com.aliwo.service.BlogService;
 import com.aliwo.service.CommentService;
 import com.aliwo.util.DateUtil;
+import com.aliwo.util.ResponseUtil;
 import com.aliwo.util.StringUtil;
+import net.sf.json.JSONObject;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -22,14 +24,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -65,16 +63,20 @@ public class BlogController {
      * @throws Exception
      */
     @RequestMapping("/articles/{id}")
-    public ModelAndView details(@PathVariable("id") Integer id, HttpServletRequest request) throws Exception {
+    public ModelAndView details(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView mav = new ModelAndView();
         // 根据主键查询博客信息
-        Blog blog = new Blog();
-        try {
-             blog = blogService.findById(id);
-        } catch (Exception e) {
-            LOG.info("blog========id:"+blog );
-            throw new RuntimeException("查询的博客信息不存在,已被删除博客信息!");
-        }
+        JSONObject result = new JSONObject();
+        Blog blog;
+        blog =blogService.findById(id);
+        if (blog == null) {
+           result.put("success",false );
+           result.put("errmsg","博客已被删除,禁止查看!!!" );
+           LOG.info("blog========id:"+blog );
+           mav.setViewName("a");
+           ResponseUtil.write(response, result);
+           return mav;
+       }
         // 处理关键字
         String keyWords = blog.getKeyWord();
         if (StringUtil.isNotEmpty(keyWords)) {
@@ -218,7 +220,7 @@ public class BlogController {
         }
         ModelAndView mav = new ModelAndView();
         mav.addObject("mainPage", "foreground/blog/result.jsp");
-        // 创建索引库,只在第一次搜索的时候创建索引库
+        //TODO 创建索引库,只在第一次搜索的时候创建索引库 存在bug当博客删除的时候会报错待解决
         this.createIndex(true);
         List<Blog> blogList = blogIndex.searchBlog(q.trim());
         Integer toIndex = blogList.size() >= Integer.parseInt(page) * 10 ? Integer.parseInt(page) * 10 : blogList
