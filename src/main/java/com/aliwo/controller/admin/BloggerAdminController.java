@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -26,7 +27,7 @@ import java.io.File;
 /**
  * 管理员博主Controller层
  *
- * @author Administrator
+ * @author xuyy19
  */
 @Controller
 @RequestMapping("/admin/blogger")
@@ -78,11 +79,11 @@ public class BloggerAdminController {
      * @throws Exception
      */
     @RequestMapping("/find")
-    public String find(HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public void find(HttpServletResponse response) throws Exception {
         Blogger blogger = bloggerService.find();
         JSONObject jsonObject = JSONObject.fromObject(blogger);
         ResponseUtil.write(response, jsonObject);
-        return null;
     }
 
     /**
@@ -94,7 +95,8 @@ public class BloggerAdminController {
      * @throws Exception
      */
     @RequestMapping("/modifyPassword")
-    public String modifyPassword(String newPassword, HttpServletResponse response, Blogger blogger) throws Exception {
+    @ResponseBody
+    public void modifyPassword(String newPassword, HttpServletResponse response, Blogger blogger) throws Exception {
         // 对铭文密码进行加密
         PasswordVo vo = new PasswordVo();
         vo.setPassword(newPassword);
@@ -109,14 +111,11 @@ public class BloggerAdminController {
             result.put("success", false);
         }
         ResponseUtil.write(response, result);
-        return null;
     }
 
     /**
      * 注销登录
-     *
      * @return
-     * @throws Exception
      */
     @RequestMapping("/logout")
     public String logout() {
