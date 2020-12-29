@@ -16,11 +16,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class BlogType implements Serializable {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 1661680664768232546L;
     /**
      * 编号
      */

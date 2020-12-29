@@ -21,10 +21,7 @@ import java.util.List;
 @Data
 public class Blog implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -8211071483188348623L;
     /**
      * 编号
      */
@@ -80,7 +77,13 @@ public class Blog implements Serializable {
 
     /**
      * 逻辑删除表示 0:不删除(默认), 1:删除
-     * */
+     */
     private String dr;
+
+
+    /**
+     * 每个博客对应的评论主表
+     */
+    private List<Comment> commentList;
 
 }

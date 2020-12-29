@@ -3,6 +3,8 @@ package com.aliwo.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * package_name:com.aliwo.dao.aliwo.entity
  *
@@ -13,7 +15,8 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class Blogger{
+public class Blogger implements Serializable {
+    private static final long serialVersionUID = -2607204218533223063L;
     /**
      * 编号
      */

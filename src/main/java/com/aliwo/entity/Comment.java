@@ -3,6 +3,7 @@ package com.aliwo.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +16,9 @@ import java.util.Date;
  **/
 @Setter
 @Getter
-public class Comment {
+public class Comment implements Serializable {
+
+    private static final long serialVersionUID = -5857232702432070951L;
     /**
      * 编号
      */
@@ -44,4 +47,9 @@ public class Comment {
      * 逻辑删除表示 0:不删除(默认), 1:删除
      * */
     private String dr;
+
+    /**
+     *博客类型id
+     */
+    private String blogTypeId;
 }
